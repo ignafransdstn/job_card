@@ -1,16 +1,17 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:job_card/features/login/domain/entities/job_code0_request.dart';
+import 'package:job_card/features/login/domain/repositories/job_code0_repository.dart';
 import 'package:xml/xml.dart' as xml;
 
-class JobCode0RepositoryImpl {
+class JobCode0RepositoryImpl implements JobCode0Repository{
   final http.Client client;
 
   JobCode0RepositoryImpl(this.client);
 
   @override
-  Future<List<Map<String, String>>> fetchjobCode0(JobCode0Request request) async {
-    final url = Uri.parse('http://10.70.0.41:5229/api/RetrieveW0');
+  Future<List<Map<String, String>>> fetchJobCode0(JobCode0Request request) async {
+    final url = Uri.parse('http://10.70.0.44:5229/api/RetrieveW0');
 
     final requestBody = jsonEncode({
       "username": request.username,

@@ -43,44 +43,4 @@ class WoTaskCubit extends Cubit<WoTaskState> {
       emit(WoTaskState(isLoading: false, errorMessage: e.toString()));
     }
   }
-
-  // bool _isFetching = false;
-
-  // Future<void> fetchWoTasks(WoTaskRequest request) async {
-  //   if (_isFetching) {
-  //     print('fetchWoTasks already in progress...');
-  //     return;
-  //   }
-  //   _isFetching = true;
-
-  //   emit(WoTaskState(isLoading: true));
-  //   try {
-  //     final taskList = await useCase.execute(request);
-  //     print('Fetched Tasks: $taskList');
-  //     emit(WoTaskState(isLoading: false, task: taskList));
-  //   } catch (e) {
-  //     emit(WoTaskState(isLoading: false, errorMessage: e.toString()));
-  //   } finally {
-  //     _isFetching = false;
-  //   }
-  // }
 }
-
-
-// class WoTaskCubit extends Cubit<WoTaskState> {
-//   final FetchWoTasksUseCase useCase;
-
-//   WoTaskCubit(this.useCase) : super(WoTaskState());
-
-//   Future<void> fetchWoTasks(WoTaskRequest request) async {
-//     emit(WoTaskState(isLoading: true));
-
-//     try {
-//       final task = await useCase.execute(request);
-
-//       emit(WoTaskState(isLoading: false, task: task));
-//     } catch (e) {
-//       emit(WoTaskState(isLoading: false, errorMessage: e.toString()));
-//     }
-//   }
-// }

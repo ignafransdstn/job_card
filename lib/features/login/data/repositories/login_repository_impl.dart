@@ -12,7 +12,7 @@ class LoginRepositoryImpl implements LoginRepository {
   @override
   Future<http.Response> login(LoginRequest request) async {
     final response = await client.post(
-      Uri.parse('http://10.70.0.41:5229/api/Positions'),  // URL API http://10.70.0.41:5229/api/Positions
+      Uri.parse('http://10.70.0.44:5229/api/Positions'),  // URL API http://10.70.0.41:5229/api/Positions
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
         'username': request.username,

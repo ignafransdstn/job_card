@@ -13,7 +13,9 @@ import 'package:job_card/main.dart';
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp(jobSearchRepository: null, loginUseCase: null, fetchWoTasksUseCase: null ,));
+    await tester.pumpWidget(
+      const MyApp(fetchWoTasksUseCase: null, fetchJobCode0UseCase: null,),
+    );
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

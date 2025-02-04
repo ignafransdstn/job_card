@@ -99,43 +99,6 @@ class WoTaskPage extends StatelessWidget {
           ],
         ),
       ),
-
-      // body: BlocBuilder<WoTaskCubit, WoTaskState>(builder: (context, state) {
-      //   if (state.isLoading) {
-      //     return const Center(
-      //       child: CircularProgressIndicator(),
-      //     );
-      //   } else if (state.errorMessage != null) {
-      //     return Center(
-      //       child: Text(
-      //         state.errorMessage ?? 'Terjadi kesalahan',
-      //         style: const TextStyle(color: Colors.red),
-      //         textAlign: TextAlign.center,
-      //       ),
-      //     );
-      //   } else if (state.task.isEmpty) {
-      //     return const Center(
-      //       child: Text('No result found'),
-      //     );
-      //   }
-
-      //   return ListView.builder(
-      //       itemCount: state.task.length, itemBuilder: (context, index) {
-      //         final taskNo = state.task[index];
-      //         return Card(
-      //           margin: const EdgeInsets.all(8.0),
-      //           child: ListTile(
-      //             title: Text('Task No: ${taskNo ['WOTaskNo']}'),
-      //             subtitle: Column(
-      //               crossAxisAlignment: CrossAxisAlignment.start,
-      //               children: [
-      //                 Text('Description: ${taskNo['WOTaskDesc']}')
-      //               ],
-      //             ),
-      //           ),
-      //         );
-      //       });
-      // }),
     );
   }
 }

@@ -28,7 +28,7 @@ class JobCode0Cubit extends Cubit<JobCode0State> {
     emit(JobCode0State(isLoading: true));
 
     try {
-      final results = await repository.fetchjobCode0(JobCode0Request(username: username, password: password, position: position, district: district));
+      final results = await repository.fetchJobCode0(JobCode0Request(username: username, password: password, position: position, district: district));
       emit(JobCode0State(isLoading: false, jobCode0Details: results));
     } catch (e) {
       emit(JobCode0State(isLoading: false, errorMessage: e.toString()));

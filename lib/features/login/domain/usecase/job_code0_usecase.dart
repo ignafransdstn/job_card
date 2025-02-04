@@ -7,6 +7,6 @@ class JobCode0Usecase {
   JobCode0Usecase(this.repository);
 
   Future<List<Map<String, String>>> execute(JobCode0Request request) {
-    return repository.JobCode0(request);
+    return repository.fetchJobCode0(request);
   }
 }

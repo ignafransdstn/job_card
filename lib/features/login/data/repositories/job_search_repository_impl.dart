@@ -11,7 +11,7 @@ class JobSearchRepositoryImpl implements JobSearchRepository {
 
   @override
   Future<List<Map<String, String>>> jobSearch(JobSearchRequest request) async {
-    final url = Uri.parse('http://10.70.0.41:5229/api/JobsSearch'); //http://10.70.0.41:5229/api/JobsSearch
+    final url = Uri.parse('http://10.70.0.44:5229/api/JobsSearch'); //http://10.70.0.41:5229/api/JobsSearch
 
     // Siapkan body request
     final requestBody = jsonEncode({

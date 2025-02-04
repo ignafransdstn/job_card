@@ -70,28 +70,6 @@ class _NextPageState extends State<NextPage> {
                 });
               },
             ),
-
-            // District Dropdown
-            // DropdownButtonFormField<String>(
-            //   value: _selectedDistrict,
-            //   decoration: const InputDecoration(labelText: 'District'),
-            //   items: const [
-            //     DropdownMenuItem(value: 'BM03', child: Text('BM03')),
-            //     DropdownMenuItem(value: 'BM06', child: Text('BM06')),
-            //   ],
-            //   onChanged: (value) {
-            //     setState(() {
-            //       _selectedDistrict = value;
-
-            //       // Simpan districtCode ke UserSession
-            //       final userSession =
-            //           Provider.of<UserSession>(context, listen: false);
-            //       if (value != null) {
-            //         userSession.setDistrictCode(value);
-            //       }
-            //     });
-            //   },
-            // ),
             const SizedBox(height: 10),
             // Originator
             TextField(

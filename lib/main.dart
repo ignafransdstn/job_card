@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:job_card/features/login/data/repositories/job_code0_repository_impl.dart';
+import 'package:job_card/features/login/domain/repositories/job_code0_repository.dart';
+import 'package:job_card/features/login/domain/usecase/job_code0_usecase.dart';
+import 'package:job_card/features/login/presentation/bloc/job_code0_cubit.dart';
 import 'package:job_card/features/login/presentation/pages/wo_task_page.dart';
-// import 'package:job_card/features/login/domain/entities/task_list_request.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
@@ -16,21 +19,19 @@ import 'features/login/presentation/bloc/task_list_cubit.dart';
 import 'features/login/presentation/pages/login_page.dart';
 import 'features/login/presentation/pages/next_page.dart';
 import 'features/login/presentation/pages/jobSearch_page.dart';
-// import 'features/login/presentation/pages/wo_task_page.dart';
 import 'features/login/presentation/state/user_session_provider.dart';
 
 void main() {
-  // Initialize dependencies
   final httpClient = http.Client();
 
-  // Repositories
   final loginRepository = LoginRepositoryImpl(httpClient);
   final jobSearchRepository = JobSearchRepositoryImpl(httpClient);
   final taskListRepository = WoTaskRepositoryImpl(httpClient);
+  final jobCode0Repository = JobCode0RepositoryImpl(httpClient);
 
-  // Use Cases
   final loginUseCase = LoginUseCase(loginRepository);
   final fetchWoTasksUseCase = FetchWoTasksUseCase(taskListRepository);
+  final fetchJobCode0UseCase = JobCode0Usecase(jobCode0Repository as JobCode0Repository);
 
   runApp(
     MultiProvider(
@@ -38,13 +39,12 @@ void main() {
         ChangeNotifierProvider(create: (_) => UserSession()),
         RepositoryProvider.value(value: jobSearchRepository),
         RepositoryProvider.value(value: taskListRepository),
+        RepositoryProvider.value(value: jobCode0Repository),
         BlocProvider(create: (_) => LoginCubit(loginUseCase)),
-        // BlocProvider(create: (_) => WoTaskCubit(fetchWoTasksUseCase)),
       ],
       child: MyApp(
         fetchWoTasksUseCase: fetchWoTasksUseCase,
-        jobSearchRepository: null,
-        loginUseCase: null,
+        fetchJobCode0UseCase: fetchJobCode0UseCase,
       ),
     ),
   );
@@ -52,12 +52,13 @@ void main() {
 
 class MyApp extends StatelessWidget {
   final FetchWoTasksUseCase? fetchWoTasksUseCase;
+  final JobCode0Usecase? fetchJobCode0UseCase;
 
-  const MyApp(
-      {super.key,
-      required this.fetchWoTasksUseCase,
-      required jobSearchRepository,
-      required loginUseCase});
+  const MyApp({
+    super.key,
+    required this.fetchWoTasksUseCase,
+    required this.fetchJobCode0UseCase,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -100,103 +101,44 @@ class MyApp extends StatelessWidget {
                 ),
               ),
             );
-
           case '/woTaskPage':
             final args = settings.arguments as Map<String, dynamic>;
             return MaterialPageRoute(
-              builder: (_) => BlocProvider(
-                create: (_) => WoTaskCubit(
-                  RepositoryProvider.of<WoTaskRepositoryImpl>(context),
-                )..fetchWoTasks(
-                    username: args['username'],
-                    password: args['password'],
-                    position: args['position'],
-                    district: args['district'],
-                    workOrder: args['workOrder'],
-                    districtCode: args['districtCode'],
+              builder: (_) => MultiBlocProvider(
+                providers: [
+                  BlocProvider(
+                    create: (_) => WoTaskCubit(
+                      RepositoryProvider.of<WoTaskRepositoryImpl>(context),
+                    )..fetchWoTasks(
+                        username: args['username'],
+                        password: args['password'],
+                        position: args['position'],
+                        district: args['district'],
+                        workOrder: args['workOrder'],
+                        districtCode: args['districtCode'],
+                      ),
                   ),
-                child: const WoTaskPage(
-                  username: '',
-                  password: '',
-                  position: '',
-                  district: '',
-                  workOrder: '',
-                  districtCode: '',
+                  BlocProvider(
+                    create: (_) => JobCode0Cubit(
+                      RepositoryProvider.of<JobCode0RepositoryImpl>(context),
+                    )..fatchJobCode0(
+                        username: args['username'],
+                        password: args['password'],
+                        position: args['position'],
+                        district: args['district'],
+                      ),
+                  ),
+                ],
+                child: WoTaskPage(
+                  username: args['username'],
+                  password: args['password'],
+                  position: args['position'],
+                  district: args['district'],
+                  workOrder: args['workOrder'],
+                  districtCode: args['districtCode'],
                 ),
               ),
             );
-
-          // case '/woTaskPage':
-          //   final args = settings.arguments;
-
-          //   if (args == null || args is! Map<String, dynamic>) {
-          //     print('Error: Invalid arguments in main.dart for WoTaskPage');
-          //     return MaterialPageRoute(
-          //       builder: (_) => Scaffold(
-          //         appBar: AppBar(title: const Text('Error')),
-          //         body: const Center(
-          //           child: Text(
-          //             'Invalid arguments. Please go back and try again.',
-          //             style: TextStyle(color: Colors.red),
-          //           ),
-          //         ),
-          //       ),
-          //     );
-          //   }
-
-          //   print('Arguments received in main.dart for WoTaskPage: $args');
-          //   return MaterialPageRoute(
-          //     builder: (_) => BlocProvider(
-          //       create: (_) => WoTaskCubit(fetchWoTasksUseCase!),
-          //       child: const WoTaskPage(),
-          //     ),
-          //   );
-
-          // case '/woTaskPage':
-          //   final args = settings.arguments;
-          //   // final workOrder = args?['workOrder'] ?? 'Unknown Work Order';
-
-          //   print('Building WoTaskPage with arguments: $args');
-
-          //   return MaterialPageRoute(
-          //     builder: (_) => BlocProvider(
-          //       create: (_) => WoTaskCubit(fetchWoTasksUseCase!),
-          //         // ..fetchWoTasks(WoTaskRequest(
-          //         //   username: args?['username'] ?? '',
-          //         //   password: args?['password'] ?? '',
-          //         //   position: args?['position'] ?? '',
-          //         //   district: args?['district'] ?? '',
-          //         //   workOrder: workOrder,
-          //         //   districtCode: args?['districtCode'] ?? '',
-          //         // )),
-          //       child: const WoTaskPage(),
-          //     ),
-          //   );
-
-          // case '/woTaskPage':
-          //   final args = settings.arguments as Map<String, dynamic>?;
-          //   if (args == null || args['workOrder'] == null) {
-          //     print('Error: arguments or workOrder is null');
-          //   } else {
-          //     print(
-          //         'Navigating to WoTaskPage with workOrder: ${args['workOrder']}');
-          //   }
-          //   final workOrder = args?['workOrder'] ?? 'Unknown Work Order';
-          //   return MaterialPageRoute(
-          //     builder: (_) => BlocProvider(
-          //       create: (_) => WoTaskCubit(fetchWoTasksUseCase!)
-          //         ..fetchWoTasks(WoTaskRequest(
-          //           username: args?['username'] ?? '',
-          //           password: args?['password'] ?? '',
-          //           position: args?['position'] ?? '',
-          //           district: args?['district'] ?? '',
-          //           workOrder: workOrder,
-          //           // workOrder: args['workOrder'],
-          //           districtCode: args?['districtCode'],
-          //         )),
-          //       child: const WoTaskPage(),
-          //     ),
-          //   );
           default:
             return MaterialPageRoute(builder: (_) => LoginPage());
         }

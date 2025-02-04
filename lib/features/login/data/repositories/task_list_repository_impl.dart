@@ -12,7 +12,7 @@ class WoTaskRepositoryImpl implements WoTaskRepository {
   @override
   Future<List<Map<String, String>>> fetchWoTasks(WoTaskRequest request) async {
     final url = Uri.parse(
-        'http://10.70.0.41:5229/api/WoTask'); //http://10.70.0.41:5229/api/WoTask
+        'http://10.70.0.44:5229/api/WoTask'); //http://10.70.0.41:5229/api/WoTask
 
     // Siapkan request body
     final requestBody = jsonEncode({
@@ -96,35 +96,6 @@ class WoTaskRepositoryImpl implements WoTaskRepository {
       throw Exception(
         'Unexpected content-type: ${response.headers['content-type']}',
       );
-
-      //   try {
-      //     final document = xml.XmlDocument.parse(response.body);
-      //     final taskNumbers = document
-      //         .findAllElements('ns2:WOTaskNo')
-      //         .map((node) => node.text)
-      //         .toList();
-      //     final taskDescriptions = document
-      //         .findAllElements('ns2:WOTaskDesc')
-      //         .map((node) => node.text)
-      //         .toList();
-
-      //     final List<Map<String, String>> results = [];
-      //     for (int i = 0; i < taskNumbers.length; i++) {
-      //       results.add({
-      //         "WOTaskNo": taskNumbers[i],
-      //         "WOTaskDesc":
-      //             taskDescriptions.length > i ? taskDescriptions[i] : '',
-      //       });
-      //     }
-      //     return results;
-      //   } catch (e) {
-      //     throw Exception('Error parsing SOAP response: ${response.body}');
-      //   }
-      // } else {
-      //   throw Exception(
-      //     'Unexpected content-type: ${response.headers['content-type']}',
-      //   );
-      // }
     } catch (e) {
       // Debugging log error
       print('Error occurred: $e');
